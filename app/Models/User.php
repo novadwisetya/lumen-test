@@ -21,7 +21,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'fullname', 'email',
     ];
 
     /**
@@ -32,4 +32,27 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function phone(){
+        return $this->hasMany(\App\Models\Phone::class,'user_id','id');
+    }
+
+    public static function getData($relation){
+        
+
+        $users = self::select('id', 'fullname', 'email');
+        if(!empty($relation)){
+            $relation = explode(",", $relation);
+            $users->with($relation);
+        }
+       
+        return $users->get();
+    }
+
+    public static function getUser($user){
+        return self::select('id', 'fullname', 'email')
+                     ->where('fullname', $user)
+                     ->first();
+       
+    }
 }

@@ -6,4 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 class Phone extends Model
 {
 	protected $table = 'phone';
+
+	protected $visible = ['id', 'number'];
 }
